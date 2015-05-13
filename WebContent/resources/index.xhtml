@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"
+		media="screen,projection" />
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.requestContextPath}/resources/imagens/tw.png" />
+</h:head>
+
+
+<h:body>
+	<div class="container">
+		<div class="row">
+			<div class="col s7 ">
+				<img class="
+				responsive-img" src="imagens/logo.png" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s12 card-panel grey lighten-5">
+				<h:form id="form">
+					<div class="row">
+						<div class="input-field col s4">
+							<h:outputLabel class="active" for="nome" value="Meu nome: " />
+							<h:inputText value="#{twitterMB.twitter.nome}" id="nome"
+								type="text" class="validate" required="true"
+								requiredMessage="Campo obrigatório." />
+							<h:message for="nome" style="color:red" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s6">
+							<h:outputLabel class="active" for="tweep"
+								value="O que está acontecendo?" />
+							<h:inputText value="#{twitterMB.twitter.comentario}" id="tweep"
+								type="text" class="validate" required="true"
+								requiredMessage="Campo obrigatório.">
+								<f:validateLength minimum="1" maximum="140" />
+							</h:inputText>
+							<h:message for="tweep" style="color:red" />
+							<br />
+							<h:commandButton value="Tweep" class="waves-light btn"
+								action="#{twitterMB.salvar()}" />
+						</div>
+					</div>
+				</h:form>
+				<br />
+				<h:form>
+					<div class="row">
+						<div class="col s7">
+
+							<h:dataTable value="#{twitterMB.listaTwitts()}" var="tw"
+								styleClass="bordered">
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Comentários" />
+									</f:facet>
+									#{tw.nome} disse em <h:outputText value="#{tw.data}">
+										<f:convertDateTime pattern="dd/MM/yyyy" timeZone="Brazil/East"
+											locale="pt_BR" />
+									</h:outputText> : #{tw.comentario} 
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">
+										<h:outputText value="Excluir" />
+									</f:facet>
+									<h:selectBooleanCheckbox id="excluir" value="#{tw.checado}" />
+								</h:column>
+
+							</h:dataTable>
+
+							<h:commandButton value="Excluir Selecionados"
+								class="waves-light btn"
+								onclick="if (! confirm('Deseja deletar?') ) { return false;}; return true; "
+								action="#{twitterMB.remover()}" />
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js" />
+	<script type="text/javascript" src="js/materialize.min.js" />
+</h:body>
+</html>
